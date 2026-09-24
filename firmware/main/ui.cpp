@@ -99,7 +99,7 @@ bool Ui::init() {
 
     esp_lcd_panel_io_handle_t io_handle = nullptr;
     if (esp_lcd_new_panel_io_spi(
-            reinterpret_cast<esp_lcd_spi_bus_handle_t>(SPI2_HOST),
+            static_cast<esp_lcd_spi_bus_handle_t>(SPI2_HOST),
             &io, &io_handle) != ESP_OK) {
         return false;
     }
