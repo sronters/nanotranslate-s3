@@ -1,0 +1,40 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install torch pytest numpy
+      - run: pytest -q
+      - run: cmake -S host -B host/build && cmake --build host/build -j2
+      - run: PYTHONPATH=model python tests/smoke_e2e.py
+
+  firmware:
+    runs-on: ubuntu-latest
+    container: espressif/idf:v6.1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ESP32-S3 firmware
+        working-directory: firmware
+        run: |
+          . $IDF_PATH/export.sh
+          idf.py set-target esp32s3
+          idf.py build
+
+  paper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: xu-cheng/latex-action@v3
+        with:
+          root_file: paper.tex
+          working_directory: research
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nanotranslate-s3-paper
+          path: research/paper.pdf

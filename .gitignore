@@ -14,3 +14,7 @@ research/*.fdb_latexmk
 research/*.fls
 research/*.log
 research/*.out
+
+research/figures/*.pdf
+
+research/paper.pdf
