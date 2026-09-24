@@ -34,7 +34,3 @@ jobs:
         with:
           root_file: paper.tex
           working_directory: research
-      - uses: actions/upload-artifact@v4
-        with:
-          name: nanotranslate-s3-paper
-          path: research/paper.pdf
