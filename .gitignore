@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+artifacts/*
+!artifacts/.gitkeep
+data/*
+!data/.gitkeep
+host/build/
+firmware/build/
+sdkconfig
+research/*.aux
+research/*.fdb_latexmk
+research/*.fls
+research/*.log
+research/*.out
