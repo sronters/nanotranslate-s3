@@ -658,11 +658,11 @@ Offset & Type & Meaning\\
 12 & u32 & flags\\
 16--52 & u32 & vocab, $d$, $f$, heads, layers, max lengths\\
 56--68 & u32 & PAD/BOS/EOS/UNK IDs\\
-72 & u32 & tokenizer payload bytes\\
-76 & u32 & protected payload bytes\\
-80 & u32 & CRC32 over payload\\
-84 & u32 & total file bytes\\
-88--127 & reserved & zero/future fields\\
+64 & u32 & tokenizer payload bytes\\
+68 & u32 & protected payload bytes\\
+72 & u32 & CRC32 over payload\\
+76 & u32 & total file bytes\\
+80--127 & reserved & zero/future fields\\
 \bottomrule
 \end{tabular}
 \end{table}
