@@ -1,0 +1,55 @@
+menu "NanoTranslate hardware"
+
+config NT_LCD_MOSI
+    int "LCD MOSI GPIO"
+    default 11
+
+config NT_LCD_SCLK
+    int "LCD SCLK GPIO"
+    default 12
+
+config NT_LCD_CS
+    int "LCD CS GPIO"
+    default 10
+
+config NT_LCD_DC
+    int "LCD DC GPIO"
+    default 9
+
+config NT_LCD_RST
+    int "LCD RST GPIO"
+    default 8
+
+config NT_LCD_BL
+    int "LCD backlight GPIO"
+    default 7
+
+config NT_LCD_X_GAP
+    int "ST7789 X gap"
+    default 0
+
+config NT_LCD_Y_GAP
+    int "ST7789 Y gap"
+    default 0
+
+config NT_JOY_UP
+    int "Joystick UP GPIO"
+    default 4
+
+config NT_JOY_DOWN
+    int "Joystick DOWN GPIO"
+    default 5
+
+config NT_JOY_LEFT
+    int "Joystick LEFT GPIO"
+    default 6
+
+config NT_JOY_RIGHT
+    int "Joystick RIGHT GPIO"
+    default 13
+
+config NT_JOY_PRESS
+    int "Joystick PRESS GPIO"
+    default 14
+
+endmenu

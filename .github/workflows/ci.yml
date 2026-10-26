@@ -1,0 +1,47 @@
+name: ci
+
+permissions:
+  contents: read
+on: [push, pull_request]
+
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install torch pytest numpy
+      - run: python -m pytest -q
+      - run: cmake -S host -B host/build && cmake --build host/build -j2
+      - run: PYTHONPATH=model python tests/smoke_e2e.py
+
+  firmware:
+    runs-on: ubuntu-latest
+    container: espressif/idf:v6.1
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ESP32-S3 firmware
+        working-directory: firmware
+        run: |
+          . $IDF_PATH/export.sh
+          idf.py set-target esp32s3
+          idf.py build
+
+  paper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify committed research paper
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          paper = Path("research/paper.pdf")
+          assert paper.is_file(), "Missing research/paper.pdf"
+          data = paper.read_bytes()
+          assert len(data) > 10000, "Paper PDF is unexpectedly small"
+          assert data.startswith(b"%PDF-"), "Invalid PDF header"
+          assert b"%%EOF" in data[-1024:], "PDF trailer missing"
+          print(f"Committed research paper: {len(data)} bytes")
+          PY

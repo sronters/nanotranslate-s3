@@ -1,0 +1,7 @@
+torch>=2.3
+transformers>=4.44,<5
+sentencepiece>=0.2
+datasets>=3.0
+sacrebleu>=2.4
+numpy>=1.26
+pytest>=8.0

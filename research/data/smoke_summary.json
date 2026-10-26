@@ -1,0 +1,11 @@
+{
+  "seed": 0,
+  "pairs": 20,
+  "steps": 600,
+  "initial_loss": 5.7639007568359375,
+  "final_loss": 0.04127664864063263,
+  "pytorch_train_exact": 20,
+  "q8_cpp_train_exact": 20,
+  "q8_model_bytes": 38784,
+  "note": "Memorization/parity smoke test; not held-out MT quality."
+}
