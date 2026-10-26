@@ -1,4 +1,7 @@
 name: ci
+
+permissions:
+  contents: read
 on: [push, pull_request]
 
 jobs:
@@ -10,7 +13,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install torch pytest numpy
-      - run: pytest -q
+      - run: python -m pytest -q
       - run: cmake -S host -B host/build && cmake --build host/build -j2
       - run: PYTHONPATH=model python tests/smoke_e2e.py
 

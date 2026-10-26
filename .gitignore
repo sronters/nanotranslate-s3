@@ -1,20 +1,43 @@
+# Local environments and editor state
 .venv/
+venv/
 __pycache__/
 .pytest_cache/
-*.pyc
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+.idea/
+.vscode/
+
+# Private local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+
+# Generated data and model artifacts
 artifacts/*
 !artifacts/.gitkeep
 data/*
 !data/.gitkeep
 host/build/
 firmware/build/
+firmware/sdkconfig
 sdkconfig
+sdkconfig.old
+
+# Reproducible LaTeX build intermediates
 research/*.aux
+research/*.bbl
+research/*.blg
 research/*.fdb_latexmk
 research/*.fls
 research/*.log
 research/*.out
-
+research/*.synctex.gz
+research/*.toc
 research/figures/*.pdf
-
-research/paper.pdf
+# research/paper.pdf is tracked intentionally as a paper snapshot.

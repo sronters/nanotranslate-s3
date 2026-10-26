@@ -1,20 +1,30 @@
-# Research artifacts
+# Research artifacts and evidence
 
-The detailed paper source is [`research/paper.tex`](../research/paper.tex). Run `make paper` from the repository root to regenerate analytical data, re-run the measured parity smoke experiment, and compile `research/paper.pdf` locally.
+- [Paper PDF](../research/paper.pdf)
+- [Editable LaTeX source](../research/paper.tex)
+- [Research data tables](../research/data/)
+- [Status and evidence level](STATUS.md)
 
-Evidence is deliberately separated into four classes:
+The PDF is a **research-note/preprint snapshot**, formatted using a NeurIPS-style LaTeX template. It is not a peer-reviewed or accepted NeurIPS publication.
 
-- **Measured:** host build/tests, toy memorization, PyTorch -> Q8 -> C++ parity, CRC rejection.
-- **Exact analytical:** parameter count, Q8 tensor payload, cache bytes, framebuffer/DMA bytes, dense MAC equations.
-- **Derived estimate:** prospective row-wise Q4 packed payload before a Q4 kernel exists.
-- **Planned/unverified:** full-model BLEU/chrF/COMET, real ESP32-S3 latency/tokens-per-second/power.
+## Reproduction
 
-Reproduce the research inputs with:
+From the repository root with Python, PyTorch, CMake/GCC, and a suitable LaTeX installation (`latexmk`, TikZ/PGFPlots and bibliography packages):
 
 ```bash
-python experiments/analytic_sweep.py --out-dir research/data
-python experiments/smoke_quantization.py --out-dir research/data
-cd research && latexmk -pdf -interaction=nonstopmode -halt-on-error paper.tex
+make research
+make paper
 ```
 
-Do not fill the physical-board result table from host timings. The host runtime exists for correctness/parity debugging, not MCU performance extrapolation.
+The first command reruns analytical tables and the toy 20-pair PyTorch → row-wise INT8 → C++ parity experiment. The second rebuilds the paper from `research/paper.tex` and `research/refs.bib`.
+
+## How to interpret numbers
+
+| Type | Example | What it establishes |
+| --- | --- | --- |
+| Measured on host | 20-pair memorization, INT8/C++ parity, CRC rejection | Toy-pipeline correctness on the tested inputs |
+| Exact analytical | Parameter count, dense MAC formula, logical cache sizes | Resource budgets for a specified architecture |
+| Derived estimate | Prospective Q4 storage | Hypothesis, not an implemented or benchmarked optimization |
+| Unmeasured | ESP32-S3 latency, BLEU, chrF, power | **No experimental result yet** |
+
+**Do not reuse host timing as an MCU benchmark.** Device performance claims require actual hardware measurements and clear provenance.

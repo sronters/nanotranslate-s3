@@ -29,7 +29,7 @@ def put_q8(buf:bytearray, arr):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--checkpoint",required=True); ap.add_argument("--tokenizer",required=True); ap.add_argument("--output",required=True)
-    a=ap.parse_args(); ck=torch.load(a.checkpoint,map_location="cpu"); cfg=ck["config"]; sd={k:v.detach().cpu().numpy() for k,v in ck["state_dict"].items()}; tok=FlashPiece.load(a.tokenizer)
+    a=ap.parse_args(); ck=torch.load(a.checkpoint,map_location="cpu",weights_only=True); cfg=ck["config"]; sd={k:v.detach().cpu().numpy() for k,v in ck["state_dict"].items()}; tok=FlashPiece.load(a.tokenizer)
     if tok.vocab_size != cfg["vocab_size"]: raise SystemExit("tokenizer/model vocab mismatch")
     payload=bytearray()
     # Tokenizer section.

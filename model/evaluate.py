@@ -5,7 +5,7 @@ from tokenizer import FlashPiece
 from model import TinyMT, Config
 
 def load(path,device):
-    ck=torch.load(path,map_location=device); m=TinyMT(Config(**ck["config"])); m.load_state_dict(ck["state_dict"]); m.to(device).eval(); return m
+    ck=torch.load(path,map_location=device,weights_only=True); m=TinyMT(Config(**ck["config"])); m.load_state_dict(ck["state_dict"]); m.to(device).eval(); return m
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--checkpoint",required=True); ap.add_argument("--tokenizer",required=True); ap.add_argument("--data",required=True); ap.add_argument("--raw-data"); ap.add_argument("--json-out"); ap.add_argument("--limit",type=int,default=1000)

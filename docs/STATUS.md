@@ -1,30 +1,40 @@
-# Status and evidence level
+# Status and evidence
 
-## Verified in this repository
+**NanoTranslate-S3 is an experimental prototype, not yet a validated offline translator.** The evidence levels below should be preserved in any publication, portfolio, or demo description.
 
-- Python FlashPiece tokenizer round-trip.
-- Tiny encoder-decoder Transformer can overfit a 20-pair RU->EN smoke set.
-- Exporter writes a row-wise INT8 `.s3mt` file with CRC32.
-- Portable C++ loader parses that file and rejects a deliberately corrupted payload.
-- On the smoke model, PyTorch and the quantized C++ runtime both produce `привет -> hello`.
-- Host C++ project builds with CMake/GCC.
+## Verified by code / existing repository tests
 
-## Implemented but not physically verified in this environment
+- FlashPiece tokenizer round-trip on the test strings.
+- Small PyTorch Transformer memorizes 20 training pairs.
+- Q8 export and portable host C++ inference reproduce those memorized translations.
+- The host loader rejects a deliberately modified model with a CRC32 mismatch.
+- Host C++ project builds with CMake.
+- ESP-IDF project **compiles in GitHub Actions CI** using the specified toolchain image. This is a compilation check only.
 
-- ESP-IDF firmware build on an actual ESP32-S3 toolchain.
-- ST7789 rendering on a particular display module.
-- joystick pin wiring/debounce on a particular board.
-- PIE SIMD path on physical silicon.
-- full model flash-partition mapping on physical silicon.
+These claims are about the checked-in smoke test and automated build; they do not establish real-world translation quality.
 
-## Not claimed yet
+## Implemented but unverified on physical hardware
 
-There are **no invented ESP32 latency, BLEU or chrF numbers** in this repository. The final performance table must be filled only after training a real checkpoint and flashing a board.
+- ST7789 display and five-way joystick operation on a specific assembled board.
+- Flash partition mapping and model inference on the ESP32-S3.
+- ESP32-S3 PIE SIMD execution and end-to-end output parity.
+- Measured inference latency, memory usage under load, energy and power.
 
-A useful first board experiment is:
+## Results not yet available
 
-1. train `tiny`, `base`, and `quality` presets on the same distilled corpus;
-2. evaluate BLEU/chrF on the same frozen test set;
-3. flash each exported model;
-4. record encoder time, decoder time, output tokens/s, RAM and model size;
-5. only then decide whether Q4, CTC/NAR, dual-core, or a smaller vocabulary is worth the complexity.
+- Held-out BLEU/chrF (including both normalized and raw English references).
+- Translation quality for the full student model.
+- Board tokens/sec, median/p95 latency, and memory high-water marks.
+- Statistical results for architecture, vocabulary, and quantization comparisons.
+
+The 20-pair overfit experiment is a **memorization/parity test**, not a translation benchmark. Analytical MAC/storage figures describe architecture budgets, **not hardware measurements**.
+
+## Before claiming a working standalone translator
+
+1. Build and flash a valid model on the target N16R8 board; verify display and joystick.
+2. Measure device output against the same frozen examples used for host and PyTorch comparisons; document decoding constraints.
+3. Evaluate held-out translation quality against raw and normalized references.
+4. Measure latency, RAM and power on repeated inputs, including long and short sequences.
+5. Report hardware revision, ESP-IDF and compiler versions, model checksum and exact test methodology.
+
+See [Public release checklist](PUBLIC_RELEASE.md) for license and privacy checks before switching the repository to public.

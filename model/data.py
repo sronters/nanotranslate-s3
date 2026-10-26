@@ -13,8 +13,12 @@ class TSVPairs(Dataset):
                 if len(p)<2: continue
                 ru,en=normalize_text(p[0]),normalize_english(p[1])
                 if not ru or not en: continue
-                s=tok.encode(ru,max_tokens=max_src); t=tok.encode(en,max_tokens=max_tgt)
-                if len(s)<=max_src and len(t)<=max_tgt: self.rows.append((s,t))
+                # Check *untruncated* sequences. Tokenizer.encode(max_tokens=...)
+                # would silently shorten overlong examples, contaminating targets.
+                s = tok.encode(ru)
+                t = tok.encode(en)
+                if len(s) <= max_src and len(t) <= max_tgt:
+                    self.rows.append((s, t))
                 if max_pairs and len(self.rows)>=max_pairs: break
     def __len__(self): return len(self.rows)
     def __getitem__(self,i): return self.rows[i]
